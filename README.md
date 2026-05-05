@@ -2,7 +2,7 @@
 
 Based on C# POC by  Tom Jøran Sønstebyseter Rønning  https://github.com/L1v1ng0ffTh3L4N/EdgeSavedPasswordsDumper 
 
-Ported into C and added Chrome as target. Most likely works on any Chromium based browser. 
+I have Ported the codebase into C to avoid dependecies and added Chrome as target. Most likely works on any Chromium based browser. 
 
 ---
 
