@@ -1,5 +1,18 @@
 ## EdgeSavedPasswordsDumper
-*A small educational tool demonstrating that Edge stores credentials in cleartext in process memory.*
+
+Based on C# POC by  Tom Jøran Sønstebyseter Rønning  https://github.com/L1v1ng0ffTh3L4N/EdgeSavedPasswordsDumper 
+
+Ported into C and added Chrome as target. Most likely works on any Chromium based browser. 
+
+---
+
+## Instructions
+
+Download the dumpington.c
+
+Compile it i.e(gcc -o dumpington.exe dumpington.c)
+
+Run as admin, no dependecies! 
 
 ---
 
