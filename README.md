@@ -4,17 +4,48 @@ Based on C# POC by  Tom Jøran Sønstebyseter Rønning  https://github.com/L1v1n
 
 I have Ported the codebase into C to avoid dependecies and added Chrome as target. Most likely works on any Chromium based browser. 
 
+Version 2 requires no UAC prompt and dumps every other users stored passwords from Edge (chrome needs to be running). Note that this version doesn't bypass Admin privilages in order to dump other users passwords, it simply bypasses UAC prompt.
+
 ---
 
 ## Instructions
 
-Download the dumpington.c
+Download the dumpington(v2).c
 
 Compile it i.e(gcc -o dumpington.exe dumpington.c)
 
 Run as admin, no dependecies! 
 
 ---
+
+## What can we do about it 
+
+---
+
+
+Most EDRs will focus on LSASS memory access to watch for mimikatz attacks, cookie accessing and process injections, they rarely watch for ReadProcessMemory on browsers. Below are detection logic for Sysmon as well as a premade query for SIEMs in order to test our fleets:
+
+
+
+SIEM query " 
+
+index=windows sourcetype="WinEventLog:Microsoft-Windows-Sysmon/Operational" EventID=10 
+| where TargetImage in ("*chrome.exe", "*msedge.exe") 
+| where AccessMask = 0x0410 
+| where SourceImage not like "%\\Windows\\%"
+| table TimeCreated, SourceImage, TargetImage, User, GrantedAccess
+
+"
+
+
+Sysmon detection : 
+
+" <ProcessAccess onmatch="include">
+  <TargetImage condition="contains">chrome.exe</TargetImage>
+  <TargetImage condition="contains">msedge.exe</TargetImage>
+  <AccessMask condition="is">0x0410</AccessMask>
+  <SourceImage condition="not contains">C:\Windows\</SourceImage>
+</ProcessAccess> 
 
 ## Overview
 This project is a simple C#/.NET 3.5 tool created to demonstrate that Edge stores credentials in cleartext in memory. It is intended for **educational and research purposes only**, especially for understanding memory inspection, credential handling, and security design differences across software.
